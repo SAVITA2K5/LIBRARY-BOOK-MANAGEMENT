@@ -7,20 +7,23 @@ function BookList() {
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/books")
-      .then(res => setBooks(res.data))
-      .catch(err => console.error(err));
+      .then(response => setBooks(response.data))
+      .catch(error => console.error("Error fetching books:", error));
   }, []);
 
   return (
     <div>
       <h2>Available Books</h2>
-      {books.length === 0 && <p>No books found</p>}
+
+      {books.length === 0 && <p>No books available</p>}
+
       {books.map(book => (
-        <div key={book._id}>
-          <strong>{book.title}</strong> — {book.author}
-          <br />
-          Category: {book.category} | Copies: {book.availableCopies}
-          <hr />
+        <div className="book" key={book._id}>
+          <div className="book-title">{book.title}</div>
+          <div>Author: {book.author}</div>
+          <div>Category: {book.category}</div>
+          <div>Published Year: {book.publishedYear}</div>
+          <div>Available Copies: {book.availableCopies}</div>
         </div>
       ))}
     </div>
@@ -28,3 +31,4 @@ function BookList() {
 }
 
 export default BookList;
+

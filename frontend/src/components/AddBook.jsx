@@ -17,25 +17,82 @@ function AddBook() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/api/books", {
-      ...book,
-      publishedYear: Number(book.publishedYear),
-      availableCopies: Number(book.availableCopies)
-    });
+    try {
+      await axios.post("http://localhost:5000/api/books", {
+        title: book.title,
+        author: book.author,
+        category: book.category,
+        publishedYear: Number(book.publishedYear),
+        availableCopies: Number(book.availableCopies)
+      });
 
-    alert("Book added successfully");
-    window.location.reload();
+      alert("Book added successfully");
+
+      // Reset form
+      setBook({
+        title: "",
+        author: "",
+        category: "",
+        publishedYear: "",
+        availableCopies: ""
+      });
+
+      // Refresh book list
+      window.location.reload();
+    } catch (error) {
+      alert("Error adding book");
+      console.error(error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Add Book</h2>
+      <h2>Add New Book</h2>
 
-      <input name="title" placeholder="Title" onChange={handleChange} required /><br />
-      <input name="author" placeholder="Author" onChange={handleChange} required /><br />
-      <input name="category" placeholder="Category" onChange={handleChange} required /><br />
-      <input name="publishedYear" placeholder="Published Year" onChange={handleChange} required /><br />
-      <input name="availableCopies" placeholder="Available Copies" onChange={handleChange} required /><br /><br />
+      <input
+        type="text"
+        name="title"
+        placeholder="Book Title"
+        value={book.title}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="author"
+        placeholder="Author Name"
+        value={book.author}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="text"
+        name="category"
+        placeholder="Category"
+        value={book.category}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="number"
+        name="publishedYear"
+        placeholder="Published Year"
+        value={book.publishedYear}
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        type="number"
+        name="availableCopies"
+        placeholder="Available Copies"
+        value={book.availableCopies}
+        onChange={handleChange}
+        required
+      />
 
       <button type="submit">Add Book</button>
     </form>
